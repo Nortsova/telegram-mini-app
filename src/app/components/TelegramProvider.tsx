@@ -14,6 +14,23 @@ import {
   viewport,
 } from '@telegram-apps/sdk';
 
+// Extend Window interface for Telegram WebApp
+declare global {
+  interface Window {
+    Telegram?: {
+      WebApp?: {
+        initData?: string;
+        initDataUnsafe?: {
+          user?: TelegramUser;
+          start_param?: string;
+        };
+        ready?: () => void;
+        expand?: () => void;
+      };
+    };
+  }
+}
+
 interface TelegramUser {
   id: number;
   first_name: string;
@@ -59,17 +76,32 @@ export function TelegramProvider({ children }: TelegramProviderProps) {
           return;
         }
 
+        // Debug: Check if we're in Telegram WebApp
+        console.log('Window.Telegram:', window.Telegram);
+        console.log('WebApp available:', window.Telegram?.WebApp);
+
         // Try to retrieve launch params
         const launchParams = retrieveLaunchParams();
         console.log('Launch params:', launchParams);
+        console.log('initDataRaw exists:', !!launchParams.initDataRaw);
+        console.log('initData exists:', !!launchParams.initData);
 
-        if (launchParams.initDataRaw) {
-          setInitDataRaw(String(launchParams.initDataRaw));
+        // Check if we have any Telegram data (SDK or native WebApp)
+        if (launchParams.initDataRaw || window.Telegram?.WebApp) {
+          // Use SDK data if available
+          if (launchParams.initDataRaw) {
+            setInitDataRaw(String(launchParams.initDataRaw));
+          } else if (window.Telegram?.WebApp?.initData) {
+            setInitDataRaw(window.Telegram.WebApp.initData);
+          }
 
           // Initialize components
           if (miniApp.mount.isAvailable()) {
             miniApp.mount();
             miniApp.ready();
+          } else if (window.Telegram?.WebApp?.ready) {
+            // Fallback to native WebApp API
+            window.Telegram.WebApp.ready();
           }
 
           if (themeParams.mount.isAvailable()) {
@@ -81,20 +113,32 @@ export function TelegramProvider({ children }: TelegramProviderProps) {
             if (viewport.expand.isAvailable()) {
               viewport.expand();
             }
+          } else if (window.Telegram?.WebApp?.expand) {
+            // Fallback to native WebApp API
+            window.Telegram.WebApp.expand();
           }
 
-          // Get user data from initData
+          // Get user data from initData (SDK first, then native WebApp)
+          let userData = null;
+
           if (
             launchParams.initData &&
             typeof launchParams.initData === 'object' &&
             launchParams.initData !== null &&
             'user' in launchParams.initData
           ) {
-            const userData = (launchParams.initData as any).user;
-            if (userData) {
-              setUser(userData as TelegramUser);
-            }
+            userData = (launchParams.initData as any).user;
+          } else if (window.Telegram?.WebApp?.initDataUnsafe?.user) {
+            // Fallback to native WebApp user data
+            userData = window.Telegram.WebApp.initDataUnsafe.user;
           }
+
+          if (userData) {
+            setUser(userData as TelegramUser);
+          }
+
+          // Success - we're in Telegram environment
+          console.log('Successfully initialized Telegram Mini App');
         } else {
           // For development/testing outside Telegram
           console.warn('Not running in Telegram Mini App environment');

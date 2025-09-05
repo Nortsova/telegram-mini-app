@@ -1,4 +1,5 @@
 import { UserProfile } from './components/UserProfile';
+import { TelegramDebug } from './components/TelegramDebug';
 
 export default function Home() {
   return (
@@ -14,6 +15,8 @@ export default function Home() {
         </div>
 
         <UserProfile />
+
+        <TelegramDebug />
 
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500">
