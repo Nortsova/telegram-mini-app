@@ -40,6 +40,16 @@ export default function RootLayout({
             walletConnectors: [EthereumWalletConnectors],
             appName: 'Telegram Mini App',
             appLogoUrl: 'https://telegram.org/img/t_logo.png',
+            // Telegram-specific configurations
+            shadowDOMEnabled: false,
+            cssOverrides: `
+              .dynamic-modal {
+                z-index: 999999 !important;
+              }
+              .dynamic-overlay {
+                z-index: 999998 !important;
+              }
+            `,
           }}
         >
           <TelegramProvider>{children}</TelegramProvider>

@@ -6,6 +6,9 @@ export function WalletConnect() {
   const { setShowAuthFlow, primaryWallet, user } = useDynamicContext();
 
   const handleConnectWallet = () => {
+    console.log('Connect wallet clicked');
+    console.log('setShowAuthFlow available:', !!setShowAuthFlow);
+    console.log('Environment ID:', process.env.NEXT_PUBLIC_DYNAMIC_ENV_ID);
     setShowAuthFlow(true);
   };
 
