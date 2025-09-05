@@ -40,6 +40,27 @@ export default function RootLayout({
             walletConnectors: [EthereumWalletConnectors],
             appName: 'Telegram Mini App',
             appLogoUrl: 'https://telegram.org/img/t_logo.png',
+            // Network configuration - Default to Base
+            overrides: {
+              evmNetworks: [
+                {
+                  blockExplorerUrls: ['https://basescan.org/'],
+                  chainId: 8453,
+                  chainName: 'Base',
+                  iconUrls: ['https://bridge.base.org/icons/base.svg'],
+                  name: 'Base',
+                  nativeCurrency: {
+                    decimals: 18,
+                    name: 'Ethereum',
+                    symbol: 'ETH',
+                  },
+                  networkId: 8453,
+                  rpcUrls: ['https://mainnet.base.org'],
+                  vanityName: 'Base',
+                },
+              ],
+            },
+            initialAuthenticationMode: 'connect-only',
             // Telegram-specific configurations
             shadowDOMEnabled: false,
             cssOverrides: `
