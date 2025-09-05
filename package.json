@@ -9,15 +9,12 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@dynamic-labs/ethereum": "^4.30.1",
-    "@dynamic-labs/sdk-react-core": "^4.30.1",
     "@telegram-apps/init-data-node": "^2.0.10",
     "@telegram-apps/sdk": "^3.11.5",
     "jose": "^6.1.0",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "viem": "^2.37.3",
     "zod": "^4.1.5"
   },
   "devDependencies": {

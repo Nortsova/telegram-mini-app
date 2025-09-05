@@ -1,5 +1,4 @@
 import { UserProfile } from './components/UserProfile';
-import { WalletConnect } from './components/WalletConnect';
 
 export default function Home() {
   return (
@@ -10,17 +9,15 @@ export default function Home() {
             Telegram Mini App
           </h1>
           <p className="text-gray-600">
-            Connect with Telegram and your crypto wallet
+            Connect with Telegram to see your profile
           </p>
         </div>
 
         <UserProfile />
 
-        <WalletConnect />
-
         <div className="mt-8 text-center">
           <p className="text-sm text-gray-500">
-            Built with Next.js, Telegram Mini Apps SDK & Dynamic XYZ
+            Built with Next.js and Telegram Mini Apps SDK
           </p>
         </div>
       </div>

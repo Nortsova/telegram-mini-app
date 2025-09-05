@@ -3,8 +3,6 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { TelegramProvider } from './components/TelegramProvider';
-import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
-import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,47 +32,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <DynamicContextProvider
-          settings={{
-            environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENV_ID as string,
-            walletConnectors: [EthereumWalletConnectors],
-            appName: 'Telegram Mini App',
-            appLogoUrl: 'https://telegram.org/img/t_logo.png',
-            // Network configuration - Default to Base
-            overrides: {
-              evmNetworks: [
-                {
-                  blockExplorerUrls: ['https://basescan.org/'],
-                  chainId: 8453,
-                  chainName: 'Base',
-                  iconUrls: ['https://bridge.base.org/icons/base.svg'],
-                  name: 'Base',
-                  nativeCurrency: {
-                    decimals: 18,
-                    name: 'Ethereum',
-                    symbol: 'ETH',
-                  },
-                  networkId: 8453,
-                  rpcUrls: ['https://mainnet.base.org'],
-                  vanityName: 'Base',
-                },
-              ],
-            },
-            initialAuthenticationMode: 'connect-only',
-            // Telegram-specific configurations
-            shadowDOMEnabled: false,
-            cssOverrides: `
-              .dynamic-modal {
-                z-index: 999999 !important;
-              }
-              .dynamic-overlay {
-                z-index: 999998 !important;
-              }
-            `,
-          }}
-        >
-          <TelegramProvider>{children}</TelegramProvider>
-        </DynamicContextProvider>
+        <TelegramProvider>{children}</TelegramProvider>
       </body>
     </html>
   );
