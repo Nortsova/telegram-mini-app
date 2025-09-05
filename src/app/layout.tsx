@@ -3,6 +3,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { TelegramProvider } from './components/TelegramProvider';
+import { DynamicContextProvider } from '@dynamic-labs/sdk-react-core';
+import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -32,7 +34,16 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <TelegramProvider>{children}</TelegramProvider>
+        <DynamicContextProvider
+          settings={{
+            environmentId: process.env.NEXT_PUBLIC_DYNAMIC_ENV_ID as string,
+            walletConnectors: [EthereumWalletConnectors],
+            appName: 'Telegram Mini App',
+            appLogoUrl: 'https://telegram.org/img/t_logo.png',
+          }}
+        >
+          <TelegramProvider>{children}</TelegramProvider>
+        </DynamicContextProvider>
       </body>
     </html>
   );
