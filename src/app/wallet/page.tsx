@@ -57,32 +57,39 @@ const assets: Asset[] = [
 
 export default function WalletPage() {
   return (
-    <div className="min-h-screen bg-bg-dark text-text-primary">
+    <div className="min-h-screen bg-bg-dark text-text-primary relative overflow-hidden pt-20">
+      {/* Main background gradient */}
+      <span className="absolute top-0 left-0 w-[40rem] h-[40rem] radial-gradient opacity-40 -translate-x-[20rem] -translate-y-[20rem]"></span>
+
       {/* Balance Section */}
       <div className="text-center py-12 px-4">
         <p className="text-text-secondary mb-2">Balance</p>
         <h2 className="text-5xl font-bold mb-8">$34,378.44</h2>
 
         {/* Connect to Chats Button */}
-        <button className="bg-brand-green hover:bg-brand-green-soft text-basic-white font-medium py-3 px-8 rounded-full mb-8 transition-colors flex items-center justify-center mx-auto">
+        <button className="bg-brand-green hover:bg-brand-green-soft text-basic-white font-medium py-3 px-8 rounded-full mb-8 transition-colors flex items-center justify-center mx-auto relative overflow-hidden group">
+          {/* Button gradient overlay */}
+          <span className="absolute inset-0 radial-gradient-bright opacity-0 group-hover:opacity-30 transition-opacity duration-300"></span>
           <ChatIcon
-            className="mr-2"
+            className="mr-2 relative z-10"
             width={20}
             height={20}
             stroke="currentColor"
           />
-          Connect to Chats
+          <span className="relative z-10">Connect to Chats</span>
         </button>
 
         {/* Action Buttons */}
         <div className="flex gap-4 justify-center mb-12">
-          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center">
-            <DownIcon className="mr-3" width={24} height={24} />
-            Withdraw
+          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group">
+            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+            <DownIcon className="mr-3 relative z-10" width={24} height={24} />
+            <span className="relative z-10">Withdraw</span>
           </button>
-          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center">
-            <UpIcon className="mr-3" width={24} height={24} />
-            Receive
+          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group">
+            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+            <UpIcon className="mr-3 relative z-10" width={24} height={24} />
+            <span className="relative z-10">Receive</span>
           </button>
         </div>
       </div>
@@ -102,20 +109,23 @@ export default function WalletPage() {
           {assets.map((asset, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-4 bg-bg-dark-gray hover:bg-stroke/10 rounded-2xl transition-colors"
+              className="flex items-center justify-between p-4 bg-bg-dark-gray hover:bg-stroke/10 rounded-2xl transition-colors relative overflow-hidden group"
             >
-              <div className="flex items-center">
+              {/* Card gradient overlay */}
+              <span className="absolute inset-0 radial-gradient-soft opacity-0 group-hover:opacity-15 transition-opacity duration-300"></span>
+              <div className="flex items-center relative z-10">
                 <div
-                  className={`w-12 h-12 ${asset.bgColor} rounded-full flex items-center justify-center text-white text-xl font-bold mr-4`}
+                  className={`w-12 h-12 ${asset.bgColor} rounded-full flex items-center justify-center text-white text-xl font-bold mr-4 relative overflow-hidden`}
                 >
-                  {asset.icon}
+                  <span className="absolute inset-0 radial-gradient-sm opacity-30"></span>
+                  <span className="relative z-10">{asset.icon}</span>
                 </div>
                 <div>
                   <h4 className="font-semibold text-lg">{asset.symbol}</h4>
                   <p className="text-text-secondary text-sm">{asset.name}</p>
                 </div>
               </div>
-              <div className="text-right">
+              <div className="text-right relative z-10">
                 <p className="font-semibold text-lg">{asset.amount}</p>
                 <p className="text-text-secondary text-sm">{asset.value}</p>
               </div>

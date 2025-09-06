@@ -17,7 +17,37 @@ module.exports = {
         normal: '400',
         medium: '500',
       },
+      colors: {
+        'brand-green': 'var(--color-brand-green)',
+        'brand-green-soft': 'var(--color-brand-green-soft)',
+        'brand-green-extra': 'var(--color-brand-green-extra)',
+        'brand-green-bright': 'var(--color-brand-green-bright)',
+        'bg-dark': 'var(--color-bg-dark)',
+        'bg-dark-gray': 'var(--color-bg-dark-gray)',
+        'bg-gray': 'var(--color-bg-gray)',
+        'text-primary': 'var(--color-text-primary)',
+        'text-secondary': 'var(--color-text-secondary)',
+        'basic-white': 'var(--color-basic-white)',
+        'basic-black': 'var(--color-basic-black)',
+        stroke: 'var(--color-stroke)',
+      },
+      backgroundImage: {
+        'gradient-brand': 'var(--gradient-brand)',
+        'gradient-brand-radial': 'var(--gradient-brand-radial)',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '.bg-gradient-brand-radial': {
+          background: 'var(--brand-gradient-radial)',
+        },
+        '.bg-gradient-brand': {
+          background: 'var(--gradient-brand)',
+        },
+      };
+      addUtilities(newUtilities);
+    },
+  ],
 };

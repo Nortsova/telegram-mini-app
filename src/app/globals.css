@@ -5,8 +5,10 @@
   --brand-green: #10ab53;
   --brand-green-soft: #50cd8e;
   --brand-green-extra: #38ef7d;
+  --brand-green-bright: #35e97e;
   --brand-gradient-from: #11998e;
   --brand-gradient-to: #38ef7d;
+  --brand-gradient-radial: radial-gradient(circle, #35e97e 0%, transparent 70%);
 
   /* Background Colors */
   --bg-dark: #101010;
@@ -36,8 +38,10 @@
   --color-brand-green: var(--brand-green);
   --color-brand-green-soft: var(--brand-green-soft);
   --color-brand-green-extra: var(--brand-green-extra);
+  --color-brand-green-bright: var(--brand-green-bright);
   --color-brand-gradient-from: var(--brand-gradient-from);
   --color-brand-gradient-to: var(--brand-gradient-to);
+  --color-brand-gradient-radial: var(--brand-gradient-radial);
 
   /* Background Colors */
   --color-bg-dark: var(--bg-dark);
@@ -73,6 +77,7 @@
     var(--brand-gradient-from),
     var(--brand-gradient-to)
   );
+  --gradient-brand-radial: var(--brand-gradient-radial);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -86,4 +91,45 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
+}
+
+.radial-gradient {
+  background: var(--brand-gradient-radial);
+}
+
+.radial-gradient-sm {
+  background: radial-gradient(circle, #35e97e 0%, transparent 50%);
+}
+
+.radial-gradient-lg {
+  background: radial-gradient(circle, #35e97e 0%, transparent 80%);
+}
+
+.radial-gradient-center {
+  background: radial-gradient(circle at center, #35e97e 0%, transparent 70%);
+}
+
+.radial-gradient-top {
+  background: radial-gradient(circle at top, #35e97e 0%, transparent 70%);
+}
+
+.radial-gradient-bottom {
+  background: radial-gradient(circle at bottom, #35e97e 0%, transparent 70%);
+}
+
+.radial-gradient-soft {
+  background: radial-gradient(
+    circle,
+    rgba(53, 233, 126, 0.6) 0%,
+    transparent 70%
+  );
+}
+
+.radial-gradient-bright {
+  background: radial-gradient(
+    circle,
+    #35e97e 0%,
+    rgba(53, 233, 126, 0.3) 50%,
+    transparent 70%
+  );
 }
