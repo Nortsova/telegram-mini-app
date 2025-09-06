@@ -4,7 +4,7 @@
  */
 
 // Base API configuration
-const API_BASE_URL = 'https://evm.p2e.tg/';
+const API_BASE_URL = 'https://evm.p2e.tg';
 
 // Types
 export interface User {
