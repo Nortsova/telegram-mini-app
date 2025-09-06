@@ -19,53 +19,16 @@ export default function Home() {
         <div className="mt-8 text-center space-y-4">
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
-              href="/initial-screen"
-              className="inline-flex items-center px-4 py-2 bg-brand-green text-basic-white font-medium rounded-lg hover:bg-brand-green-soft transition-colors"
-            >
-              Open Wallet
-            </Link>
-            <Link
-              href="/about"
-              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
-            >
-              Learn More About This App
-            </Link>
-
-            <Link
-              href="/initial-screen"
-              className="inline-flex items-center px-4 py-2 bg-brand-green-bright text-basic-black font-medium rounded-lg hover:bg-brand-green-extra transition-colors"
-            >
-              Initial Screen
-            </Link>
-            <Link
-              href="/select-wallet"
-              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
-            >
-              Select Wallet
-            </Link>
-            <Link
-              href="/setup-steps"
-              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
-            >
-              Setup Steps
-            </Link>
-            <Link
               href="/main-screen"
               className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
             >
               Main Screen
             </Link>
             <Link
-              href="/my-chats"
+              href="/main-main"
               className="inline-flex items-center px-4 py-2 bg-brand-green-bright text-basic-black font-medium rounded-lg hover:bg-brand-green-extra transition-colors"
             >
-              My Chats
-            </Link>
-            <Link
-              href="/chat-details/1"
-              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
-            >
-              Chat Details
+              Future starting point
             </Link>
           </div>
           <p className="text-sm text-text-secondary">
