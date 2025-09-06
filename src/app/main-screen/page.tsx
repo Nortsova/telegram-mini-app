@@ -75,12 +75,8 @@ const addUIProperties = (assets: Asset[]): UIAsset[] => {
 };
 
 export default function WalletPage() {
-  // Use the custom hook for user balance data
-  const { balance, assets: apiAssets, isLoading, error } = useUserBalance();
-
   // Convert API assets to UI assets with color properties, or use fallback
-  const assets: UIAsset[] =
-    apiAssets.length > 0 ? addUIProperties(apiAssets) : fallbackAssets;
+  const assets: UIAsset[] = fallbackAssets;
 
   return (
     <div className="min-h-screen bg-bg-dark text-text-primary relative overflow-hidden pt-20">
@@ -90,21 +86,8 @@ export default function WalletPage() {
       {/* Balance Section */}
       <div className="text-center py-12 px-4">
         <p className="text-text-secondary mb-2">Balance</p>
-        {isLoading ? (
-          <div className="flex items-center justify-center mb-8">
-            <div className="animate-spin w-8 h-8 border-2 border-brand-green-bright border-t-transparent rounded-full"></div>
-          </div>
-        ) : error ? (
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-red-400 mb-2">Error</h2>
-            <p className="text-sm text-text-secondary">{error}</p>
-            <p className="text-2xl font-bold text-text-secondary mt-2">
-              Using demo data
-            </p>
-          </div>
-        ) : (
-          <h2 className="text-5xl font-bold mb-8">{balance || '$34,378.44'}</h2>
-        )}
+
+        <h2 className="text-5xl font-bold mb-8">{'$34,378.44'}</h2>
 
         {/* Connect to Chats Button */}
         <div className="mb-8">
