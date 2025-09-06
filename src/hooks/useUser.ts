@@ -21,6 +21,13 @@ interface UseUserOptions {
 export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
   const { enabled = true } = options;
 
+  const tg = window.Telegram?.WebApp;
+  const initData = tg?.initData;
+
+  console.log('initData', initData);
+
+  const params = new URLSearchParams(initData);
+
   // React Query for fetching user data
   const {
     data: user,
@@ -31,7 +38,7 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
   } = useQuery({
     queryKey: queryKeys.user('telegram-webapp'),
     queryFn: async (): Promise<User> => {
-      const response = await api.user.getUser();
+      const response = await api.user.getUser(params);
 
       if (response.success && response.data) {
         return response.data;

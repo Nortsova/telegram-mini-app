@@ -86,8 +86,8 @@ export const userApi = {
    * Get user data from Telegram WebApp
    * @returns Promise<ApiResponse<User>>
    */
-  async getUser(): Promise<ApiResponse<User>> {
-    return apiRequest<User>('/auth/telegram/webapp', {
+  async getUser(params: URLSearchParams): Promise<ApiResponse<User>> {
+    return apiRequest<User>(`/auth/telegram/webapp?${params.toString()}`, {
       method: 'GET',
     });
   },
