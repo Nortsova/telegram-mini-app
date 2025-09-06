@@ -1,1 +1,1 @@
-export { useAppStore } from './useAppStore';
+export { useAppStore, type ChatGroup } from './useAppStore';

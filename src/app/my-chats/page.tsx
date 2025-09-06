@@ -2,52 +2,62 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useAppStore } from '@/store';
 
-interface ChatGroup {
-  id: string;
-  name: string;
-  messageCount: number;
-  earnings: number;
-  rewards: number;
-  avatar: string;
-}
-
-const chatGroups: ChatGroup[] = [
-  {
-    id: '1',
-    name: 'Crypto Builders',
-    messageCount: 120,
-    earnings: 300.0,
-    rewards: 45.0,
-    avatar: '👨‍💻',
-  },
-  {
-    id: '2',
-    name: 'Healthcare Innovators',
-    messageCount: 90,
-    earnings: 250.0,
-    rewards: 30.0,
-    avatar: '👩‍⚕️',
-  },
-  {
-    id: '3',
-    name: 'Sustainable Designers',
-    messageCount: 75,
-    earnings: 200.0,
-    rewards: 25.0,
-    avatar: '🌱',
-  },
-  {
-    id: '4',
-    name: 'Education Tech',
-    messageCount: 150,
-    earnings: 400.0,
-    rewards: 60.0,
-    avatar: '📚',
-  },
+// Random avatar icons pool
+const avatarIcons = [
+  '👨‍💻',
+  '👩‍💻',
+  '👨‍🔬',
+  '👩‍🔬',
+  '👨‍⚕️',
+  '👩‍⚕️',
+  '👨‍🎨',
+  '👩‍🎨',
+  '👨‍🏫',
+  '👩‍🏫',
+  '👨‍💼',
+  '👩‍💼',
+  '👨‍🔧',
+  '👩‍🔧',
+  '👨‍🚀',
+  '👩‍🚀',
+  '🌱',
+  '💎',
+  '🚀',
+  '⚡',
+  '🔥',
+  '💡',
+  '🎯',
+  '📚',
+  '🎨',
+  '🔬',
+  '⚗️',
+  '🧪',
+  '🎭',
+  '🎪',
+  '🎨',
+  '🎬',
+  '🎵',
+  '🎸',
+  '🎹',
+  '🎤',
+  '🎧',
+  '🎮',
+  '🕹️',
+  '🎲',
 ];
 
+// Function to get a consistent random avatar for a chat ID
+const getRandomAvatar = (chatId: string): string => {
+  const hash = chatId
+    .split('')
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return avatarIcons[hash % avatarIcons.length];
+};
+
 export default function MyChats() {
+  const { chats } = useAppStore();
   return (
     <div className="min-h-screen relative overflow-hidden flex flex-col">
       {/* Background Image */}
@@ -96,7 +106,7 @@ export default function MyChats() {
         {/* Chat List */}
         <div className="flex-1 px-6 pb-6">
           <div className="space-y-4">
-            {chatGroups.map((chat) => (
+            {chats.map((chat) => (
               <Link key={chat.id} href={`/chat-details/${chat.id}`}>
                 <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-4 hover:bg-black/40 transition-colors cursor-pointer touch-manipulation">
                   <div className="flex items-center justify-between">
@@ -104,7 +114,7 @@ export default function MyChats() {
                     <div className="flex items-center flex-1">
                       {/* Avatar */}
                       <div className="w-12 h-12 bg-gray-700/50 rounded-full flex items-center justify-center mr-4 text-xl">
-                        {chat.avatar}
+                        {getRandomAvatar(chat.id)}
                       </div>
 
                       {/* Chat Info */}
@@ -134,7 +144,7 @@ export default function MyChats() {
           </div>
 
           {/* Empty State (if no chats) */}
-          {chatGroups.length === 0 && (
+          {chats.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mb-4">
                 <svg

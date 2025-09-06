@@ -4,6 +4,7 @@ import React from 'react';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import Button from '../../components/Button';
+import { useAppStore } from '@/store';
 
 interface Transaction {
   id: string;
@@ -14,107 +15,100 @@ interface Transaction {
   avatar: string;
 }
 
-interface ChatDetails {
-  id: string;
-  name: string;
-  messageCount: number;
-  earnings: number;
-  rewards: number;
-  avatar: string;
-  transactions: Transaction[];
-}
+// Random avatar icons pool (same as in my-chats)
+const avatarIcons = [
+  '👨‍💻',
+  '👩‍💻',
+  '👨‍🔬',
+  '👩‍🔬',
+  '👨‍⚕️',
+  '👩‍⚕️',
+  '👨‍🎨',
+  '👩‍🎨',
+  '👨‍🏫',
+  '👩‍🏫',
+  '👨‍💼',
+  '👩‍💼',
+  '👨‍🔧',
+  '👩‍🔧',
+  '👨‍🚀',
+  '👩‍🚀',
+  '🌱',
+  '💎',
+  '🚀',
+  '⚡',
+  '🔥',
+  '💡',
+  '🎯',
+  '📚',
+  '🎨',
+  '🔬',
+  '⚗️',
+  '🧪',
+  '🎭',
+  '🎪',
+  '🎨',
+  '🎬',
+  '🎵',
+  '🎸',
+  '🎹',
+  '🎤',
+  '🎧',
+  '🎮',
+  '🕹️',
+  '🎲',
+];
 
-const chatDetailsData: Record<string, ChatDetails> = {
-  '1': {
-    id: '1',
-    name: 'Crypto Builders',
-    messageCount: 120,
-    earnings: 300.0,
-    rewards: 45.0,
-    avatar: '👨‍💻',
-    transactions: [
-      {
-        id: '1',
-        type: 'payment',
-        user: 'Kianna Geidt',
-        amount: -2.68,
-        date: 'September 5, 2025',
-        avatar: '👩‍🦰',
-      },
-      {
-        id: '2',
-        type: 'payment',
-        user: 'Kianna Geidt',
-        amount: -2.68,
-        date: 'January 5, 2018',
-        avatar: '👩‍🦰',
-      },
-      {
-        id: '3',
-        type: 'topup',
-        user: 'Top Up',
-        amount: 60.25,
-        date: 'September 15, 2025',
-        avatar: '+',
-      },
-      {
-        id: '4',
-        type: 'payment',
-        user: "Liam O'Connor",
-        amount: -5.4,
-        date: 'September 12, 2025',
-        avatar: '👨‍💼',
-      },
-      {
-        id: '5',
-        type: 'payment',
-        user: 'Sophia Wang',
-        amount: -3.15,
-        date: 'September 22, 2025',
-        avatar: '👩‍💻',
-      },
-      {
-        id: '6',
-        type: 'topup',
-        user: 'Top Up',
-        amount: 160.25,
-        date: 'September 15, 2025',
-        avatar: '+',
-      },
-    ],
-  },
-  '2': {
-    id: '2',
-    name: 'Healthcare Innovators',
-    messageCount: 90,
-    earnings: 250.0,
-    rewards: 30.0,
-    avatar: '👩‍⚕️',
-    transactions: [
-      {
-        id: '1',
-        type: 'payment',
-        user: 'Dr. Sarah Johnson',
-        amount: -4.2,
-        date: 'September 3, 2025',
-        avatar: '👩‍⚕️',
-      },
-      {
-        id: '2',
-        type: 'topup',
-        user: 'Top Up',
-        amount: 75.5,
-        date: 'September 10, 2025',
-        avatar: '+',
-      },
-    ],
-  },
+// Function to get a consistent random avatar for a chat ID
+const getRandomAvatar = (chatId: string): string => {
+  const hash = chatId
+    .split('')
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return avatarIcons[hash % avatarIcons.length];
+};
+
+// Sample transactions for demonstration (in a real app, this would come from an API)
+const getSampleTransactions = (chatId: string): Transaction[] => {
+  // Generate some sample transactions based on chat ID
+  const baseTransactions: Transaction[] = [
+    {
+      id: `${chatId}-1`,
+      type: 'payment',
+      user: 'Alice Johnson',
+      amount: -2.68,
+      date: 'September 5, 2025',
+      avatar: '👩‍🦰',
+    },
+    {
+      id: `${chatId}-2`,
+      type: 'topup',
+      user: 'Top Up',
+      amount: 60.25,
+      date: 'September 15, 2025',
+      avatar: '+',
+    },
+    {
+      id: `${chatId}-3`,
+      type: 'payment',
+      user: 'Bob Smith',
+      amount: -5.4,
+      date: 'September 12, 2025',
+      avatar: '👨‍💼',
+    },
+  ];
+
+  return baseTransactions;
 };
 
 export default function ChatDetails() {
   const params = useParams();
   const chatId = params.id as string;
-  const chat = chatDetailsData[chatId];
+  const { chats } = useAppStore();
+
+  // Find the chat in the Zustand store
+  const chat = chats.find((c) => c.id === chatId);
+  const chatAvatar = chat ? getRandomAvatar(chat.id) : '';
+  const transactions = chat ? getSampleTransactions(chat.id) : [];
 
   if (!chat) {
     return (
@@ -201,7 +195,7 @@ export default function ChatDetails() {
               <div className="flex items-center flex-1">
                 {/* Avatar */}
                 <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mr-4 text-2xl">
-                  {chat.avatar}
+                  {chatAvatar}
                 </div>
 
                 {/* Chat Info */}
@@ -287,7 +281,7 @@ export default function ChatDetails() {
 
           {/* Transaction List */}
           <div className="space-y-4">
-            {chat.transactions.map((transaction) => (
+            {transactions.map((transaction) => (
               <div
                 key={transaction.id}
                 className="flex items-center justify-between py-4"

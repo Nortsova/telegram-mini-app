@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Button from '../components/Button';
+import { useAppStore } from '@/store';
 
 interface SetupFormData {
   groupUsername: string;
@@ -11,6 +12,7 @@ interface SetupFormData {
 
 export default function SetupSteps() {
   const router = useRouter();
+  const { addChat } = useAppStore();
   const [currentStep] = useState(1);
 
   const {
@@ -38,8 +40,21 @@ export default function SetupSteps() {
 
   const onSubmit = (data: SetupFormData) => {
     console.log('Setup form submitted:', data);
-    // Here you would typically process the setup
-    // and then navigate to the my-chats screen
+
+    // Clean the username (remove @ if present)
+    const cleanUsername = data.groupUsername.startsWith('@')
+      ? data.groupUsername.slice(1)
+      : data.groupUsername;
+
+    // Add new chat to the store with initial values
+    addChat({
+      name: cleanUsername,
+      messageCount: 0,
+      earnings: 0,
+      rewards: 0,
+    });
+
+    // Navigate to my-chats screen
     router.push('/my-chats');
   };
 
@@ -127,10 +142,23 @@ export default function SetupSteps() {
 
               {/* Error Message */}
               {errors.groupUsername && (
-                <p className="text-sm text-red-400">
+                <p className="mt-2 text-sm text-red-400">
                   {errors.groupUsername.message}
                 </p>
               )}
+
+              {/* Bottom CTA Button */}
+              <div className="mt-8">
+                <Button
+                  type="submit"
+                  variant="gradient"
+                  size="lg"
+                  className="w-full text-lg font-semibold shadow-2xl"
+                  disabled={!isValid}
+                >
+                  Continue
+                </Button>
+              </div>
             </form>
           </div>
         </div>
@@ -143,19 +171,6 @@ export default function SetupSteps() {
               style={{ width: `${(currentStep / 2) * 100}%` }}
             />
           </div>
-        </div>
-
-        {/* Bottom CTA Button */}
-        <div className="pb-8">
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            variant="gradient"
-            size="lg"
-            className="w-full text-lg font-semibold shadow-2xl"
-            disabled={!isValid}
-          >
-            Continue
-          </Button>
         </div>
       </div>
     </div>
