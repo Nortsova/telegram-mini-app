@@ -43,13 +43,42 @@ export default function SetupSteps() {
       if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
         setIsLoadingGroups(true);
         try {
-          // Access Telegram WebApp API
-          // const tg = window.Telegram.WebApp;
+          const tg = window.Telegram.WebApp;
 
-          // Request user's groups (this is a mock implementation)
-          // In real implementation, you'd need to use Telegram Bot API
-          // or have your backend fetch groups using the user's token
-          const mockGroups: TelegramGroup[] = [
+          // Get user data from Telegram
+          const initData = tg.initData;
+          const user = tg.initDataUnsafe?.user;
+
+          if (!user) {
+            throw new Error('No user data available from Telegram');
+          }
+
+          // Call your backend API to fetch user's groups
+          // This requires your backend to use Telegram Bot API
+          const response = await fetch('/api/telegram/groups', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              initData,
+              userId: user.id,
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to fetch groups from backend');
+          }
+
+          const data = await response.json();
+          const groups: TelegramGroup[] = data.groups || [];
+
+          setTelegramGroups(groups);
+        } catch (error) {
+          console.error('Failed to fetch Telegram groups:', error);
+
+          // Fallback to mock data for development/demo
+          const fallbackGroups: TelegramGroup[] = [
             {
               id: '1',
               title: 'Crypto Builders',
@@ -76,14 +105,7 @@ export default function SetupSteps() {
             },
           ];
 
-          // Simulate API delay
-          await new Promise((resolve) => setTimeout(resolve, 1000));
-
-          setTelegramGroups(mockGroups);
-        } catch (error) {
-          console.error('Failed to fetch Telegram groups:', error);
-          // Fallback to empty array
-          setTelegramGroups([]);
+          setTelegramGroups(fallbackGroups);
         } finally {
           setIsLoadingGroups(false);
         }
