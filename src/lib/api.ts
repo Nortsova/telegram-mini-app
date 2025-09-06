@@ -87,10 +87,10 @@ export const userApi = {
    * @returns Promise<ApiResponse<User>>
    */
   async getUser(initData: string): Promise<ApiResponse<User>> {
-    return apiRequest<User>(`/auth/telegram/webapp?${initData}`, {
-      method: 'GET',
-    });
-    return apiRequest<User>(`/auth/`, {
+    // return apiRequest<User>(`/auth/telegram/webapp?${initData}`, {
+    //   method: 'GET',
+    // });
+    return apiRequest<User>(`/auth`, {
       method: 'GET',
     });
   },
