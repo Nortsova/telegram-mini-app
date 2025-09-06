@@ -4,7 +4,7 @@
  */
 
 // Base API configuration
-const API_BASE_URL = 'https://evm.p2e.tg/api/v1';
+const API_BASE_URL = 'https://5d96fd903760.ngrok-free.app';
 
 // Types
 export interface User {
