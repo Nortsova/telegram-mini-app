@@ -21,7 +21,7 @@ export default function SelectWallet() {
     formState: { errors, isValid },
   } = useForm<WalletFormData>({
     defaultValues: {
-      walletAddress: '0x742d35Cc6634C0532925a3b8D0c5e0c0b5c0a4E0',
+      walletAddress: '',
     },
     mode: 'onChange',
   });
