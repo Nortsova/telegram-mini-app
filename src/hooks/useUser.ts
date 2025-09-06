@@ -27,8 +27,6 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
 
   console.log('initData', initData);
 
-  const params = new URLSearchParams(initData);
-
   // React Query for fetching user data
   const {
     data: user,
@@ -39,7 +37,7 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
   } = useQuery({
     queryKey: queryKeys.user('telegram-webapp'),
     queryFn: async (): Promise<User> => {
-      const response = await api.user.getUser(params);
+      const response = await api.user.getUser(initData);
 
       if (response.success && response.data) {
         return response.data;
