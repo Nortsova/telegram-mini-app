@@ -3,6 +3,7 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { isAddress } from 'viem';
 import Button from '../components/Button';
 
 interface WalletFormData {
@@ -18,22 +19,38 @@ export default function SelectWallet() {
     formState: { errors, isValid },
   } = useForm<WalletFormData>({
     defaultValues: {
-      walletAddress: 'UQCU3ftgrd...3ftgrdfgv57egt',
+      walletAddress: '0x742d35Cc6634C0532925a3b8D0c5e0c0b5c0a4E0',
     },
     mode: 'onChange',
   });
 
   const walletAddress = watch('walletAddress');
 
-  const handleCopyAddress = () => {
-    navigator.clipboard.writeText(walletAddress);
-    // You could add a toast notification here
+  const handleCopyAddress = async () => {
+    if (walletAddress && isAddress(walletAddress)) {
+      try {
+        await navigator.clipboard.writeText(walletAddress);
+        // You could add a toast notification here
+        console.log('Address copied to clipboard');
+      } catch (err) {
+        console.error('Failed to copy address:', err);
+      }
+    }
   };
 
   const onSubmit = (data: WalletFormData) => {
     console.log('Wallet form submitted:', data);
-    // Here you would typically validate the wallet address
-    // and then navigate to the next screen
+
+    // Additional validation using Viem
+    if (!isAddress(data.walletAddress)) {
+      console.error('Invalid Ethereum address');
+      return;
+    }
+
+    // Store wallet address (you might want to use context or localStorage)
+    localStorage.setItem('walletAddress', data.walletAddress);
+
+    // Navigate to main screen
     router.push('/main-screen');
   };
 
@@ -88,24 +105,29 @@ export default function SelectWallet() {
             </label>
 
             {/* Address Input Container */}
-            <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-4 flex items-center justify-between focus-within:border-brand-green-bright/50 transition-colors">
+            <div
+              className={`bg-black/30 backdrop-blur-sm border rounded-2xl p-4 flex items-center justify-between transition-colors ${
+                errors.walletAddress
+                  ? 'border-red-400/50 focus-within:border-red-400/70'
+                  : walletAddress && isAddress(walletAddress)
+                  ? 'border-brand-green-bright/50 focus-within:border-brand-green-bright/70'
+                  : 'border-gray-600/30 focus-within:border-brand-green-bright/50'
+              }`}
+            >
               <div className="flex-1 mr-4">
                 <input
                   id="walletAddress"
                   type="text"
                   {...register('walletAddress', {
                     required: 'Wallet address is required',
-                    minLength: {
-                      value: 10,
-                      message: 'Wallet address is too short',
-                    },
-                    pattern: {
-                      value: /^[A-Za-z0-9]+$/,
-                      message: 'Invalid wallet address format',
+                    validate: {
+                      isValidAddress: (value) =>
+                        isAddress(value) ||
+                        'Please enter a valid Ethereum address',
                     },
                   })}
                   className="w-full bg-transparent text-gray-300 font-mono text-sm placeholder-gray-500 focus:outline-none"
-                  placeholder="Enter your wallet address"
+                  placeholder="0x742d35Cc6634C0532925a3b8D0c5e0c0b5c0a4E0"
                 />
               </div>
 
@@ -113,7 +135,12 @@ export default function SelectWallet() {
               <button
                 type="button"
                 onClick={handleCopyAddress}
-                className="flex-shrink-0 p-2 hover:bg-white/10 rounded-lg transition-colors touch-manipulation cursor-pointer"
+                disabled={!walletAddress || !isAddress(walletAddress)}
+                className={`flex-shrink-0 p-2 rounded-lg transition-colors touch-manipulation ${
+                  walletAddress && isAddress(walletAddress)
+                    ? 'hover:bg-white/10 cursor-pointer'
+                    : 'cursor-not-allowed opacity-50'
+                }`}
                 aria-label="Copy wallet address"
               >
                 <svg
@@ -122,7 +149,11 @@ export default function SelectWallet() {
                   viewBox="0 0 24 24"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="text-gray-300"
+                  className={
+                    walletAddress && isAddress(walletAddress)
+                      ? 'text-brand-green-bright'
+                      : 'text-gray-500'
+                  }
                 >
                   <path
                     d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"
