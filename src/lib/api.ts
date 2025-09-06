@@ -92,6 +92,7 @@ export const userApi = {
     // });
     return apiRequest<User>(`/auth/`, {
       method: 'GET',
+      mode: 'cors',
     });
   },
 };
