@@ -1,21 +1,82 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Brand Colors */
+  --brand-green: #10ab53;
+  --brand-green-soft: #50cd8e;
+  --brand-green-extra: #38ef7d;
+  --brand-gradient-from: #11998e;
+  --brand-gradient-to: #38ef7d;
+
+  /* Background Colors */
+  --bg-dark: #101010;
+  --bg-dark-gray: #141414;
+  --bg-gray: #d9d9d9;
+
+  /* Text Colors */
+  --text-primary: #ffffff;
+  --text-secondary: #a6a6a6;
+
+  /* Basic Colors */
+  --basic-white: #ffffff;
+  --basic-black: #141414;
+
+  /* UI Colors */
+  --stroke: #606060;
+  --status-success: #38ef7d;
+  --status-error: #ff3c30;
+
+  /* Legacy variables for compatibility */
+  --background: var(--basic-white);
+  --foreground: var(--basic-black);
 }
 
 @theme inline {
+  /* Brand Colors */
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-soft: var(--brand-green-soft);
+  --color-brand-green-extra: var(--brand-green-extra);
+  --color-brand-gradient-from: var(--brand-gradient-from);
+  --color-brand-gradient-to: var(--brand-gradient-to);
+
+  /* Background Colors */
+  --color-bg-dark: var(--bg-dark);
+  --color-bg-dark-gray: var(--bg-dark-gray);
+  --color-bg-gray: var(--bg-gray);
+
+  /* Text Colors */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+
+  /* Basic Colors */
+  --color-basic-white: var(--basic-white);
+  --color-basic-black: var(--basic-black);
+
+  /* UI Colors */
+  --color-stroke: var(--stroke);
+  --color-success: var(--status-success);
+  --color-error: var(--status-error);
+
+  /* Legacy colors for compatibility */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+
+  /* Custom gradient utilities */
+  --gradient-brand: linear-gradient(
+    to right,
+    var(--brand-gradient-from),
+    var(--brand-gradient-to)
+  );
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: var(--bg-dark);
+    --foreground: var(--text-primary);
   }
 }
 
