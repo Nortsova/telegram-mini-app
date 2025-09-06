@@ -90,6 +90,9 @@ export const userApi = {
     return apiRequest<User>(`/auth/telegram/webapp?${initData}`, {
       method: 'GET',
     });
+    return apiRequest<User>(`/auth/`, {
+      method: 'GET',
+    });
   },
 };
 
