@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { isAddress } from 'viem';
 import Button from '../components/Button';
+import { useAppStore } from '@/store';
 
 interface WalletFormData {
   walletAddress: string;
@@ -12,6 +13,7 @@ interface WalletFormData {
 
 export default function SelectWallet() {
   const router = useRouter();
+  const { setEthWalletAddress } = useAppStore();
   const {
     register,
     handleSubmit,
@@ -47,8 +49,8 @@ export default function SelectWallet() {
       return;
     }
 
-    // Store wallet address (you might want to use context or localStorage)
-    localStorage.setItem('walletAddress', data.walletAddress);
+    // Store wallet address in Zustand store (with localStorage persistence)
+    setEthWalletAddress(data.walletAddress);
 
     // Navigate to main screen
     router.push('/main-screen');
