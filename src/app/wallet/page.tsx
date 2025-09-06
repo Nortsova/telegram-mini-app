@@ -67,16 +67,14 @@ export default function WalletPage() {
         <h2 className="text-5xl font-bold mb-8">$34,378.44</h2>
 
         {/* Connect to Chats Button */}
-        <button className="bg-brand-green hover:bg-brand-green-soft text-basic-white font-medium py-3 px-8 rounded-full mb-8 transition-colors flex items-center justify-center mx-auto relative overflow-hidden group">
-          {/* Button gradient overlay */}
-          <span className="absolute inset-0 radial-gradient-bright opacity-0 group-hover:opacity-30 transition-opacity duration-300"></span>
+        <button className="bg-gradient-to-r from-[var(--brand-gradient-from)] to-[var(--brand-gradient-to)] hover:opacity-90 text-basic-black font-medium py-3 px-8 rounded-full mb-8 transition-opacity flex items-center justify-center mx-auto relative overflow-hidden group">
           <ChatIcon
-            className="mr-2 relative z-10"
+            className="mr-2"
             width={20}
             height={20}
             stroke="currentColor"
           />
-          <span className="relative z-10">Connect to Chats</span>
+          <span>Connect to Chats</span>
         </button>
 
         {/* Action Buttons */}
