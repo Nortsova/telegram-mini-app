@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import Button from '../components/Button';
@@ -9,24 +9,14 @@ interface SetupFormData {
   groupUsername: string;
 }
 
-interface TelegramGroup {
-  id: string;
-  title: string;
-  type: string;
-  username?: string;
-}
-
 export default function SetupSteps() {
   const router = useRouter();
   const [currentStep] = useState(1);
-  const [telegramGroups, setTelegramGroups] = useState<TelegramGroup[]>([]);
-  const [isLoadingGroups, setIsLoadingGroups] = useState(false);
 
   const {
     register,
     handleSubmit,
     watch,
-    setValue,
     formState: { errors, isValid },
   } = useForm<SetupFormData>({
     defaultValues: {
@@ -37,104 +27,7 @@ export default function SetupSteps() {
 
   const groupUsername = watch('groupUsername');
 
-  // Fetch user's Telegram groups
-  useEffect(() => {
-    const fetchTelegramGroups = async () => {
-      if (typeof window !== 'undefined' && window.Telegram?.WebApp) {
-        setIsLoadingGroups(true);
-        try {
-          const tg = window.Telegram.WebApp;
-
-          // Get user data from Telegram
-          const initData = tg.initData;
-          const user = tg.initDataUnsafe?.user;
-
-          if (!user) {
-            throw new Error('No user data available from Telegram');
-          }
-
-          // Call your backend API to fetch user's groups
-          // This requires your backend to use Telegram Bot API
-          const response = await fetch('/api/telegram/groups', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              initData,
-              userId: user.id,
-            }),
-          });
-
-          if (!response.ok) {
-            throw new Error('Failed to fetch groups from backend');
-          }
-
-          const data = await response.json();
-          const groups: TelegramGroup[] = data.groups || [];
-
-          setTelegramGroups(groups);
-        } catch (error) {
-          console.error('Failed to fetch Telegram groups:', error);
-
-          // Fallback to mock data for development/demo
-          const fallbackGroups: TelegramGroup[] = [
-            {
-              id: '1',
-              title: 'Crypto Builders',
-              type: 'supergroup',
-              username: 'cryptobuilders',
-            },
-            {
-              id: '2',
-              title: 'Healthcare Innovators',
-              type: 'group',
-              username: 'healthinnovators',
-            },
-            {
-              id: '3',
-              title: 'Sustainable Designers',
-              type: 'supergroup',
-              username: 'sustainabledesign',
-            },
-            {
-              id: '4',
-              title: 'Education Tech',
-              type: 'group',
-              username: 'edtech2025',
-            },
-          ];
-
-          setTelegramGroups(fallbackGroups);
-        } finally {
-          setIsLoadingGroups(false);
-        }
-      } else {
-        // Fallback for development/non-Telegram environment
-        const mockGroups: TelegramGroup[] = [
-          {
-            id: '1',
-            title: 'Crypto Builders',
-            type: 'supergroup',
-            username: 'cryptobuilders',
-          },
-          {
-            id: '2',
-            title: 'Healthcare Innovators',
-            type: 'group',
-            username: 'healthinnovators',
-          },
-        ];
-        setTelegramGroups(mockGroups);
-      }
-    };
-
-    fetchTelegramGroups();
-  }, []);
-
-  const handleSelectGroup = (group: TelegramGroup) => {
-    setValue('groupUsername', `@${group.username}`);
-  };
+  // Remove Telegram groups fetching - keep it simple with manual input only
 
   const handleCopyUsername = () => {
     if (groupUsername) {
@@ -238,68 +131,6 @@ export default function SetupSteps() {
                   {errors.groupUsername.message}
                 </p>
               )}
-
-              {/* Your Telegram Groups */}
-              <div className="mt-6">
-                <h3 className="text-white font-semibold text-base mb-4">
-                  Your Telegram Groups:
-                </h3>
-
-                {isLoadingGroups ? (
-                  <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-6 text-center">
-                    <div className="animate-spin w-6 h-6 border-2 border-brand-green-bright border-t-transparent rounded-full mx-auto mb-2"></div>
-                    <p className="text-gray-300">Loading your groups...</p>
-                  </div>
-                ) : telegramGroups.length > 0 ? (
-                  <div className="space-y-2">
-                    {telegramGroups.map((group) => (
-                      <div
-                        key={group.id}
-                        onClick={() => handleSelectGroup(group)}
-                        className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-xl p-3 hover:bg-black/40 transition-colors cursor-pointer"
-                      >
-                        <div className="flex items-center">
-                          <div className="w-8 h-8 bg-brand-green-bright/20 rounded-full flex items-center justify-center mr-3">
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="text-brand-green-bright"
-                            >
-                              <path
-                                d="M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21M23 21V19C22.9993 18.1137 22.7044 17.2528 22.1614 16.5523C21.6184 15.8519 20.8581 15.3516 20 15.13M16 3.13C16.8604 3.35031 17.623 3.85071 18.1676 4.55232C18.7122 5.25392 19.0078 6.11683 19.0078 7.005C19.0078 7.89318 18.7122 8.75608 18.1676 9.45769C17.623 10.1593 16.8604 10.6597 16 10.88M13 7C13 9.20914 11.2091 11 9 11C6.79086 11 5 9.20914 5 7C5 4.79086 6.79086 3 9 3C11.2091 3 13 4.79086 13 7Z"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
-                          </div>
-                          <div className="flex-1">
-                            <h4 className="text-white font-medium text-sm mb-1">
-                              {group.title}
-                            </h4>
-                            <p className="text-gray-400 text-xs">
-                              @{group.username} • {group.type}
-                            </p>
-                          </div>
-                          <div className="text-gray-400 text-xs">
-                            Click to use
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-xl p-4 text-center">
-                    <p className="text-gray-400 text-sm">
-                      No groups found in your Telegram account.
-                    </p>
-                  </div>
-                )}
-              </div>
             </form>
           </div>
         </div>
