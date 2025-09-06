@@ -48,6 +48,12 @@ export default function Home() {
             >
               Initial Screen
             </Link>
+            <Link
+              href="/select-wallet"
+              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
+            >
+              Select Wallet
+            </Link>
           </div>
           <p className="text-sm text-text-secondary">
             Built with Next.js and Telegram Mini Apps SDK

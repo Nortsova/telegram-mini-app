@@ -55,7 +55,7 @@ export default function InitialScreen() {
 
         {/* CTA Button */}
         <div className="mb-8">
-          <Link href="/wallet">
+          <Link href="/select-wallet">
             <Button
               variant="gradient"
               size="lg"
