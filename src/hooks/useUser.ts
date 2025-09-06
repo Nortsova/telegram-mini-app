@@ -21,8 +21,9 @@ interface UseUserOptions {
 export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
   const { enabled = true } = options;
 
-  const tg = window.Telegram?.WebApp;
-  const initData = tg?.initData;
+  // Check if we're in the browser environment
+  const tg = typeof window !== 'undefined' ? window?.Telegram?.WebApp : null;
+  const initData = tg?.initData || '';
 
   console.log('initData', initData);
 
@@ -46,7 +47,7 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
         throw new Error(response.error || 'Failed to fetch user data');
       }
     },
-    enabled,
+    enabled: enabled && typeof window !== 'undefined' && !!initData,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
