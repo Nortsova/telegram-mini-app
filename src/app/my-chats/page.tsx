@@ -95,40 +95,39 @@ export default function MyChats() {
         <div className="flex-1 px-6 pb-6">
           <div className="space-y-4">
             {chatGroups.map((chat) => (
-              <div
-                key={chat.id}
-                className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-4 hover:bg-black/40 transition-colors cursor-pointer touch-manipulation"
-              >
-                <div className="flex items-center justify-between">
-                  {/* Left Side - Avatar and Info */}
-                  <div className="flex items-center flex-1">
-                    {/* Avatar */}
-                    <div className="w-12 h-12 bg-gray-700/50 rounded-full flex items-center justify-center mr-4 text-xl">
-                      {chat.avatar}
+              <Link key={chat.id} href={`/chat-details/${chat.id}`}>
+                <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-4 hover:bg-black/40 transition-colors cursor-pointer touch-manipulation">
+                  <div className="flex items-center justify-between">
+                    {/* Left Side - Avatar and Info */}
+                    <div className="flex items-center flex-1">
+                      {/* Avatar */}
+                      <div className="w-12 h-12 bg-gray-700/50 rounded-full flex items-center justify-center mr-4 text-xl">
+                        {chat.avatar}
+                      </div>
+
+                      {/* Chat Info */}
+                      <div className="flex-1">
+                        <h3 className="text-white font-semibold text-lg mb-1">
+                          {chat.name}
+                        </h3>
+                        <p className="text-gray-400 text-sm">
+                          {chat.messageCount} messages
+                        </p>
+                      </div>
                     </div>
 
-                    {/* Chat Info */}
-                    <div className="flex-1">
-                      <h3 className="text-white font-semibold text-lg mb-1">
-                        {chat.name}
-                      </h3>
+                    {/* Right Side - Earnings */}
+                    <div className="text-right">
+                      <p className="text-white font-bold text-lg mb-1">
+                        ${chat.earnings.toFixed(2)}
+                      </p>
                       <p className="text-gray-400 text-sm">
-                        {chat.messageCount} messages
+                        Rewards: ${chat.rewards.toFixed(2)}
                       </p>
                     </div>
                   </div>
-
-                  {/* Right Side - Earnings */}
-                  <div className="text-right">
-                    <p className="text-white font-bold text-lg mb-1">
-                      ${chat.earnings.toFixed(2)}
-                    </p>
-                    <p className="text-gray-400 text-sm">
-                      Rewards: ${chat.rewards.toFixed(2)}
-                    </p>
-                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 

@@ -72,6 +72,12 @@ export default function Home() {
             >
               My Chats
             </Link>
+            <Link
+              href="/chat-details/1"
+              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
+            >
+              Chat Details
+            </Link>
           </div>
           <p className="text-sm text-text-secondary">
             Built with Next.js and Telegram Mini Apps SDK
