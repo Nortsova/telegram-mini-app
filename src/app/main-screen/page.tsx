@@ -70,7 +70,7 @@ export default function WalletPage() {
 
         {/* Connect to Chats Button */}
         <div className="mb-8">
-          <Link href="/setup-steps">
+          <Link href="/my-chats">
             <Button
               variant="gradient"
               size="md"
@@ -79,7 +79,7 @@ export default function WalletPage() {
               }
               className="mx-auto"
             >
-              Connect to Chats
+              My Chats
             </Button>
           </Link>
         </div>
