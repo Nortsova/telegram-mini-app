@@ -54,6 +54,24 @@ export default function Home() {
             >
               Select Wallet
             </Link>
+            <Link
+              href="/setup-steps"
+              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
+            >
+              Setup Steps
+            </Link>
+            <Link
+              href="/main-screen"
+              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
+            >
+              Main Screen
+            </Link>
+            <Link
+              href="/my-chats"
+              className="inline-flex items-center px-4 py-2 bg-brand-green-bright text-basic-black font-medium rounded-lg hover:bg-brand-green-extra transition-colors"
+            >
+              My Chats
+            </Link>
           </div>
           <p className="text-sm text-text-secondary">
             Built with Next.js and Telegram Mini Apps SDK

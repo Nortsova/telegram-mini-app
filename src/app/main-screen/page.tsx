@@ -1,4 +1,5 @@
 // Using custom React component
+import Link from 'next/link';
 import ChatIcon from '../components/icons/ChatIcon';
 import Button from '../components/Button';
 import DownIcon from '../components/icons/DownIcon';
@@ -69,14 +70,18 @@ export default function WalletPage() {
 
         {/* Connect to Chats Button */}
         <div className="mb-8">
-          <Button
-            variant="gradient"
-            size="md"
-            leftIcon={<ChatIcon width={20} height={20} stroke="currentColor" />}
-            className="mx-auto"
-          >
-            Connect to Chats
-          </Button>
+          <Link href="/setup-steps">
+            <Button
+              variant="gradient"
+              size="md"
+              leftIcon={
+                <ChatIcon width={20} height={20} stroke="currentColor" />
+              }
+              className="mx-auto"
+            >
+              Connect to Chats
+            </Button>
+          </Link>
         </div>
 
         {/* Action Buttons */}
