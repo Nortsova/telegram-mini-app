@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.87.1",
+    "@tanstack/react-query-devtools": "^5.87.1",
     "@telegram-apps/init-data-node": "^2.0.10",
     "@telegram-apps/sdk": "^3.11.5",
     "jose": "^6.1.0",
