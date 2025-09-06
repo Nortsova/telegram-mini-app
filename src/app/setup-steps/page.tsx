@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Button from '../components/Button';
 
 interface SetupFormData {
-  selectedGroup: string;
+  groupUsername: string;
 }
 
 interface TelegramGroup {
@@ -30,12 +30,12 @@ export default function SetupSteps() {
     formState: { errors, isValid },
   } = useForm<SetupFormData>({
     defaultValues: {
-      selectedGroup: '',
+      groupUsername: '',
     },
     mode: 'onChange',
   });
 
-  const selectedGroup = watch('selectedGroup');
+  const groupUsername = watch('groupUsername');
 
   // Fetch user's Telegram groups
   useEffect(() => {
@@ -111,7 +111,14 @@ export default function SetupSteps() {
   }, []);
 
   const handleSelectGroup = (group: TelegramGroup) => {
-    setValue('selectedGroup', group.id);
+    setValue('groupUsername', `@${group.username}`);
+  };
+
+  const handleCopyUsername = () => {
+    if (groupUsername) {
+      navigator.clipboard.writeText(groupUsername);
+      // You could add a toast notification here
+    }
   };
 
   const onSubmit = (data: SetupFormData) => {
@@ -150,44 +157,90 @@ export default function SetupSteps() {
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-white mb-4">Step 2</h2>
             <p className="text-gray-300 text-base mb-6 leading-relaxed">
-              Select a group from your Telegram account.
+              Paste username of your group.
             </p>
 
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Hidden input for form validation */}
-              <input
-                type="hidden"
-                {...register('selectedGroup', {
-                  required: 'Please select a group',
-                })}
-              />
-
-              {/* Groups List */}
-              {isLoadingGroups ? (
-                <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-6 text-center">
-                  <div className="animate-spin w-6 h-6 border-2 border-brand-green-bright border-t-transparent rounded-full mx-auto mb-2"></div>
-                  <p className="text-gray-300">Loading your groups...</p>
+              {/* Username Input Container */}
+              <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-4 flex items-center justify-between focus-within:border-brand-green-bright/50 transition-colors">
+                <div className="flex-1 mr-4">
+                  <input
+                    id="groupUsername"
+                    type="text"
+                    {...register('groupUsername', {
+                      required: 'Group username is required',
+                      minLength: {
+                        value: 2,
+                        message: 'Username is too short',
+                      },
+                      pattern: {
+                        value: /^@?[A-Za-z0-9_]+$/,
+                        message: 'Invalid username format',
+                      },
+                    })}
+                    className="w-full bg-transparent text-gray-300 text-base placeholder-gray-500 focus:outline-none"
+                    placeholder="@username"
+                  />
                 </div>
-              ) : telegramGroups.length > 0 ? (
-                <div className="space-y-3">
-                  {telegramGroups.map((group) => (
-                    <button
-                      key={group.id}
-                      type="button"
-                      onClick={() => handleSelectGroup(group)}
-                      className={`w-full bg-black/30 backdrop-blur-sm border rounded-2xl p-4 text-left transition-all hover:bg-black/40 ${
-                        selectedGroup === group.id
-                          ? 'border-brand-green-bright/70 bg-brand-green-bright/10'
-                          : 'border-gray-600/30'
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
+
+                {/* Copy Button */}
+                <button
+                  type="button"
+                  onClick={handleCopyUsername}
+                  className="flex-shrink-0 p-2 hover:bg-white/10 rounded-lg transition-colors touch-manipulation cursor-pointer"
+                  aria-label="Copy group username"
+                  disabled={!groupUsername}
+                >
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`${
+                      groupUsername ? 'text-gray-300' : 'text-gray-500'
+                    }`}
+                  >
+                    <path
+                      d="M16 1H4C2.9 1 2 1.9 2 3V17H4V3H16V1ZM19 5H8C6.9 5 6 5.9 6 7V21C6 22.1 6.9 23 8 23H19C20.1 23 21 22.1 21 21V7C21 5.9 20.1 5 19 5ZM19 21H8V7H19V21Z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Error Message */}
+              {errors.groupUsername && (
+                <p className="text-sm text-red-400">
+                  {errors.groupUsername.message}
+                </p>
+              )}
+
+              {/* Your Telegram Groups */}
+              <div className="mt-6">
+                <h3 className="text-white font-semibold text-base mb-4">
+                  Your Telegram Groups:
+                </h3>
+
+                {isLoadingGroups ? (
+                  <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-6 text-center">
+                    <div className="animate-spin w-6 h-6 border-2 border-brand-green-bright border-t-transparent rounded-full mx-auto mb-2"></div>
+                    <p className="text-gray-300">Loading your groups...</p>
+                  </div>
+                ) : telegramGroups.length > 0 ? (
+                  <div className="space-y-2">
+                    {telegramGroups.map((group) => (
+                      <div
+                        key={group.id}
+                        onClick={() => handleSelectGroup(group)}
+                        className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-xl p-3 hover:bg-black/40 transition-colors cursor-pointer"
+                      >
                         <div className="flex items-center">
-                          <div className="w-10 h-10 bg-brand-green-bright/20 rounded-full flex items-center justify-center mr-3">
+                          <div className="w-8 h-8 bg-brand-green-bright/20 rounded-full flex items-center justify-center mr-3">
                             <svg
-                              width="16"
-                              height="16"
+                              width="12"
+                              height="12"
                               viewBox="0 0 24 24"
                               fill="none"
                               xmlns="http://www.w3.org/2000/svg"
@@ -202,54 +255,29 @@ export default function SetupSteps() {
                               />
                             </svg>
                           </div>
-                          <div>
-                            <h3 className="text-white font-semibold text-base mb-1">
+                          <div className="flex-1">
+                            <h4 className="text-white font-medium text-sm mb-1">
                               {group.title}
-                            </h3>
-                            <p className="text-gray-400 text-sm">
+                            </h4>
+                            <p className="text-gray-400 text-xs">
                               @{group.username} • {group.type}
                             </p>
                           </div>
-                        </div>
-                        {selectedGroup === group.id && (
-                          <div className="w-6 h-6 bg-brand-green-bright rounded-full flex items-center justify-center">
-                            <svg
-                              width="12"
-                              height="12"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                              className="text-basic-black"
-                            >
-                              <path
-                                d="M20 6L9 17L4 12"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                              />
-                            </svg>
+                          <div className="text-gray-400 text-xs">
+                            Click to use
                           </div>
-                        )}
+                        </div>
                       </div>
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-2xl p-6 text-center">
-                  <p className="text-gray-300 mb-4">No groups found</p>
-                  <p className="text-gray-400 text-sm">
-                    Make sure you have groups in your Telegram account.
-                  </p>
-                </div>
-              )}
-
-              {/* Error Message */}
-              {errors.selectedGroup && (
-                <p className="text-sm text-red-400">
-                  {errors.selectedGroup.message}
-                </p>
-              )}
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-black/30 backdrop-blur-sm border border-gray-600/30 rounded-xl p-4 text-center">
+                    <p className="text-gray-400 text-sm">
+                      No groups found in your Telegram account.
+                    </p>
+                  </div>
+                )}
+              </div>
             </form>
           </div>
         </div>
