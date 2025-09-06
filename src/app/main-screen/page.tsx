@@ -70,7 +70,7 @@ export default function WalletPage() {
       <span className="absolute top-0 left-0 w-[40rem] h-[40rem] radial-gradient opacity-40 -translate-x-[20rem] -translate-y-[20rem]"></span>
 
       {/* Header with User Photo */}
-      <div className="relative z-10 flex items-center justify-end p-6 pt-16">
+      <div className="relative z-10 flex items-center justify-end p-6">
         {user ? (
           <div className="flex items-center">
             {user.photo_url ? (
@@ -120,12 +120,9 @@ export default function WalletPage() {
 
       {/* Balance Section */}
       <div className="text-center py-8 px-4">
-        {user && (
-          <p className="text-text-secondary text-sm mb-1">
-            Hi, {user.first_name}
-          </p>
-        )}
-        <p className="text-text-secondary mb-2">Balance</p>
+        <p className="text-text-secondary mb-2">
+          {user && `Hi, ${user.first_name}. `}Your balance
+        </p>
 
         <h2 className="text-5xl font-bold mb-8">{'$34,378.44'}</h2>
 
