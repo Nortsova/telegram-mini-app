@@ -67,7 +67,7 @@ export default function WalletPage() {
         <h2 className="text-5xl font-bold mb-8">$34,378.44</h2>
 
         {/* Connect to Chats Button */}
-        <button className="bg-gradient-to-r from-[var(--brand-gradient-from)] to-[var(--brand-gradient-to)] hover:opacity-90 text-basic-black font-medium py-3 px-8 rounded-full mb-8 transition-opacity flex items-center justify-center mx-auto relative overflow-hidden group">
+        <button className="bg-gradient-to-r from-[var(--brand-gradient-from)] to-[var(--brand-gradient-to)] hover:opacity-90 active:opacity-80 focus:opacity-90 text-basic-black font-medium py-3 px-8 rounded-full mb-8 transition-opacity flex items-center justify-center mx-auto relative overflow-hidden group touch-manipulation">
           <ChatIcon
             className="mr-2"
             width={20}
@@ -79,13 +79,13 @@ export default function WalletPage() {
 
         {/* Action Buttons */}
         <div className="flex gap-4 justify-center mb-12">
-          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group">
-            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 active:bg-stroke/30 focus:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group touch-manipulation">
+            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 group-active:opacity-25 group-focus:opacity-20 transition-opacity duration-300"></span>
             <DownIcon className="mr-3 relative z-10" width={24} height={24} />
             <span className="relative z-10">Withdraw</span>
           </button>
-          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group">
-            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 transition-opacity duration-300"></span>
+          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 active:bg-stroke/30 focus:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group touch-manipulation">
+            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 group-active:opacity-25 group-focus:opacity-20 transition-opacity duration-300"></span>
             <UpIcon className="mr-3 relative z-10" width={24} height={24} />
             <span className="relative z-10">Receive</span>
           </button>
@@ -107,10 +107,12 @@ export default function WalletPage() {
           {assets.map((asset, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-4 bg-bg-dark-gray hover:bg-stroke/10 rounded-2xl transition-colors relative overflow-hidden group"
+              className="flex items-center justify-between p-4 bg-bg-dark-gray hover:bg-stroke/10 active:bg-stroke/15 focus:bg-stroke/10 rounded-2xl transition-colors relative overflow-hidden group cursor-pointer touch-manipulation"
+              tabIndex={0}
+              role="button"
             >
               {/* Card gradient overlay */}
-              <span className="absolute inset-0 radial-gradient-soft opacity-0 group-hover:opacity-15 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 radial-gradient-soft opacity-0 group-hover:opacity-15 group-active:opacity-20 group-focus:opacity-15 transition-opacity duration-300"></span>
               <div className="flex items-center relative z-10">
                 <div
                   className={`w-12 h-12 ${asset.bgColor} rounded-full flex items-center justify-center text-white text-xl font-bold mr-4 relative overflow-hidden`}
