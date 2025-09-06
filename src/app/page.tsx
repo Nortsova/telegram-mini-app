@@ -30,18 +30,7 @@ export default function Home() {
             >
               Learn More About This App
             </Link>
-            <Link
-              href="/icons"
-              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
-            >
-              View Icons Demo
-            </Link>
-            <Link
-              href="/button-demo"
-              className="inline-flex items-center px-4 py-2 bg-bg-dark-gray text-text-primary font-medium rounded-lg hover:bg-stroke/20 transition-colors border border-stroke"
-            >
-              Button Components
-            </Link>
+
             <Link
               href="/initial-screen"
               className="inline-flex items-center px-4 py-2 bg-brand-green-bright text-basic-black font-medium rounded-lg hover:bg-brand-green-extra transition-colors"

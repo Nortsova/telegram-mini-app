@@ -161,7 +161,7 @@ export default function ChatDetails() {
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/Background-2x.png')",
+          backgroundImage: "url('/background-2x.png')",
         }}
       />
 
