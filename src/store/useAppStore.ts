@@ -1,12 +1,62 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
+// Random avatar icons pool
+const avatarIcons = [
+  '👨‍💻',
+  '👩‍💻',
+  '👨‍🔬',
+  '👩‍🔬',
+  '👨‍⚕️',
+  '👩‍⚕️',
+  '👨‍🎨',
+  '👩‍🎨',
+  '👨‍🏫',
+  '👩‍🏫',
+  '👨‍💼',
+  '👩‍💼',
+  '👨‍🔧',
+  '👩‍🔧',
+  '👨‍🚀',
+  '👩‍🚀',
+  '🌱',
+  '💎',
+  '🚀',
+  '⚡',
+  '🔥',
+  '💡',
+  '🎯',
+  '📚',
+  '🎨',
+  '🔬',
+  '⚗️',
+  '🧪',
+  '🎭',
+  '🎪',
+  '🎨',
+  '🎬',
+  '🎵',
+  '🎸',
+  '🎹',
+  '🎤',
+  '🎧',
+  '🎮',
+  '🕹️',
+  '🎲',
+];
+
+// Function to get a random avatar
+const getRandomAvatar = (): string => {
+  return avatarIcons[Math.floor(Math.random() * avatarIcons.length)];
+};
+
 export interface ChatGroup {
   id: string;
   name: string;
   messageCount: number;
   earnings: number;
   rewards: number;
+  avatar: string;
 }
 
 interface AppState {
@@ -18,7 +68,7 @@ interface AppState {
 
   // Actions
   setEthWalletAddress: (address: string | null) => void;
-  addChat: (chat: Omit<ChatGroup, 'id'>) => void;
+  addChat: (chat: Pick<ChatGroup, 'name'>) => void;
   removeChat: (chatId: string) => void;
   updateChat: (chatId: string, updates: Partial<Omit<ChatGroup, 'id'>>) => void;
 
@@ -28,36 +78,7 @@ interface AppState {
 
 const initialState = {
   ethWalletAddress: null,
-  chats: [
-    {
-      id: '1',
-      name: 'Crypto Builders',
-      messageCount: 120,
-      earnings: 300.0,
-      rewards: 45.0,
-    },
-    {
-      id: '2',
-      name: 'Healthcare Innovators',
-      messageCount: 90,
-      earnings: 250.0,
-      rewards: 30.0,
-    },
-    {
-      id: '3',
-      name: 'Sustainable Designers',
-      messageCount: 75,
-      earnings: 200.0,
-      rewards: 25.0,
-    },
-    {
-      id: '4',
-      name: 'Education Tech',
-      messageCount: 150,
-      earnings: 400.0,
-      rewards: 60.0,
-    },
-  ],
+  chats: [],
 };
 
 export const useAppStore = create<AppState>()(
@@ -69,9 +90,32 @@ export const useAppStore = create<AppState>()(
       setEthWalletAddress: (address) => set({ ethWalletAddress: address }),
 
       addChat: (chat) =>
-        set((state) => ({
-          chats: [...state.chats, { ...chat, id: Date.now().toString() }],
-        })),
+        set((state) => {
+          // Generate random earnings between $50-$500
+          const randomEarnings = Math.floor(Math.random() * 451) + 50;
+          // Generate random rewards between 10-25% of earnings
+          const randomRewards = Math.floor(
+            randomEarnings * (0.1 + Math.random() * 0.15),
+          );
+          // Generate random message count between 25-200
+          const randomMessageCount = Math.floor(Math.random() * 176) + 25;
+          // Generate random avatar
+          const randomAvatar = getRandomAvatar();
+
+          return {
+            chats: [
+              ...state.chats,
+              {
+                ...chat,
+                id: Date.now().toString(),
+                earnings: randomEarnings,
+                rewards: randomRewards,
+                messageCount: randomMessageCount,
+                avatar: randomAvatar,
+              },
+            ],
+          };
+        }),
 
       removeChat: (chatId) =>
         set((state) => ({

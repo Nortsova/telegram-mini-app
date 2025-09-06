@@ -4,58 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { useAppStore } from '@/store';
 
-// Random avatar icons pool
-const avatarIcons = [
-  '👨‍💻',
-  '👩‍💻',
-  '👨‍🔬',
-  '👩‍🔬',
-  '👨‍⚕️',
-  '👩‍⚕️',
-  '👨‍🎨',
-  '👩‍🎨',
-  '👨‍🏫',
-  '👩‍🏫',
-  '👨‍💼',
-  '👩‍💼',
-  '👨‍🔧',
-  '👩‍🔧',
-  '👨‍🚀',
-  '👩‍🚀',
-  '🌱',
-  '💎',
-  '🚀',
-  '⚡',
-  '🔥',
-  '💡',
-  '🎯',
-  '📚',
-  '🎨',
-  '🔬',
-  '⚗️',
-  '🧪',
-  '🎭',
-  '🎪',
-  '🎨',
-  '🎬',
-  '🎵',
-  '🎸',
-  '🎹',
-  '🎤',
-  '🎧',
-  '🎮',
-  '🕹️',
-  '🎲',
-];
-
-// Function to get a consistent random avatar for a chat ID
-const getRandomAvatar = (chatId: string): string => {
-  const hash = chatId
-    .split('')
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return avatarIcons[hash % avatarIcons.length];
-};
-
 export default function MyChats() {
   const { chats } = useAppStore();
   return (
@@ -114,7 +62,7 @@ export default function MyChats() {
                     <div className="flex items-center flex-1">
                       {/* Avatar */}
                       <div className="w-12 h-12 bg-gray-700/50 rounded-full flex items-center justify-center mr-4 text-xl">
-                        {getRandomAvatar(chat.id)}
+                        {chat.avatar}
                       </div>
 
                       {/* Chat Info */}

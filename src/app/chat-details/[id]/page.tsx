@@ -15,58 +15,6 @@ interface Transaction {
   avatar: string;
 }
 
-// Random avatar icons pool (same as in my-chats)
-const avatarIcons = [
-  '👨‍💻',
-  '👩‍💻',
-  '👨‍🔬',
-  '👩‍🔬',
-  '👨‍⚕️',
-  '👩‍⚕️',
-  '👨‍🎨',
-  '👩‍🎨',
-  '👨‍🏫',
-  '👩‍🏫',
-  '👨‍💼',
-  '👩‍💼',
-  '👨‍🔧',
-  '👩‍🔧',
-  '👨‍🚀',
-  '👩‍🚀',
-  '🌱',
-  '💎',
-  '🚀',
-  '⚡',
-  '🔥',
-  '💡',
-  '🎯',
-  '📚',
-  '🎨',
-  '🔬',
-  '⚗️',
-  '🧪',
-  '🎭',
-  '🎪',
-  '🎨',
-  '🎬',
-  '🎵',
-  '🎸',
-  '🎹',
-  '🎤',
-  '🎧',
-  '🎮',
-  '🕹️',
-  '🎲',
-];
-
-// Function to get a consistent random avatar for a chat ID
-const getRandomAvatar = (chatId: string): string => {
-  const hash = chatId
-    .split('')
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
-  return avatarIcons[hash % avatarIcons.length];
-};
-
 // Sample transactions for demonstration (in a real app, this would come from an API)
 const getSampleTransactions = (chatId: string): Transaction[] => {
   // Generate some sample transactions based on chat ID
@@ -107,7 +55,6 @@ export default function ChatDetails() {
 
   // Find the chat in the Zustand store
   const chat = chats.find((c) => c.id === chatId);
-  const chatAvatar = chat ? getRandomAvatar(chat.id) : '';
   const transactions = chat ? getSampleTransactions(chat.id) : [];
 
   if (!chat) {
@@ -195,7 +142,7 @@ export default function ChatDetails() {
               <div className="flex items-center flex-1">
                 {/* Avatar */}
                 <div className="w-16 h-16 bg-gray-700/50 rounded-full flex items-center justify-center mr-4 text-2xl">
-                  {chatAvatar}
+                  {chat.avatar}
                 </div>
 
                 {/* Chat Info */}

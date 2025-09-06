@@ -46,12 +46,9 @@ export default function SetupSteps() {
       ? data.groupUsername.slice(1)
       : data.groupUsername;
 
-    // Add new chat to the store with initial values
+    // Add new chat to the store (random values will be auto-generated)
     addChat({
       name: cleanUsername,
-      messageCount: 0,
-      earnings: 0,
-      rewards: 0,
     });
 
     // Navigate to my-chats screen

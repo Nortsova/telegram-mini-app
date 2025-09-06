@@ -129,7 +129,7 @@ export default function SelectWallet() {
                     },
                   })}
                   className="w-full bg-transparent text-gray-300 font-mono text-sm placeholder-gray-500 focus:outline-none"
-                  placeholder="0x742d35Cc6634C0532925a3b8D0c5e0c0b5c0a4E0"
+                  placeholder="0x..."
                 />
               </div>
 
