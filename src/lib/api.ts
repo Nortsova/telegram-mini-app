@@ -4,8 +4,7 @@
  */
 
 // Base API configuration
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_BASE_URL = 'http://evm.p2e.tg/api/v1';
 
 // Types
 export interface User {
@@ -84,43 +83,12 @@ async function apiRequest<T>(
 // User API functions
 export const userApi = {
   /**
-   * Get user data by wallet address
-   * @param walletAddress - Ethereum wallet address
+   * Get user data from Telegram WebApp
    * @returns Promise<ApiResponse<User>>
    */
-  async getUser(walletAddress: string): Promise<ApiResponse<User>> {
-    return apiRequest<User>(`/users/${walletAddress}`, {
+  async getUser(): Promise<ApiResponse<User>> {
+    return apiRequest<User>('/auth/telegram/webapp', {
       method: 'GET',
-    });
-  },
-
-  /**
-   * Create or update user
-   * @param userData - User data to create/update
-   * @returns Promise<ApiResponse<User>>
-   */
-  async createOrUpdateUser(
-    userData: Partial<User>,
-  ): Promise<ApiResponse<User>> {
-    return apiRequest<User>('/users', {
-      method: 'POST',
-      body: JSON.stringify(userData),
-    });
-  },
-
-  /**
-   * Update user balance
-   * @param walletAddress - Ethereum wallet address
-   * @param balance - New balance data
-   * @returns Promise<ApiResponse<User>>
-   */
-  async updateBalance(
-    walletAddress: string,
-    balance: User['balance'],
-  ): Promise<ApiResponse<User>> {
-    return apiRequest<User>(`/users/${walletAddress}/balance`, {
-      method: 'PUT',
-      body: JSON.stringify(balance),
     });
   },
 };

@@ -1,5 +1,4 @@
-import { useCallback } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { api, User, Asset } from '../lib/api';
 import { queryKeys } from '../lib/queryClient';
 
@@ -8,35 +7,19 @@ interface UseUserReturn {
   isLoading: boolean;
   error: string | null;
   refetch: () => Promise<void>;
-  updateUser: (userData: Partial<User>) => Promise<void>;
-  clearError: () => void;
   isRefetching: boolean;
 }
 
 interface UseUserOptions {
   enabled?: boolean;
-  walletAddress?: string;
 }
 
 /**
- * Custom hook for managing user data with React Query
- * Handles fetching, caching, and updating user information
+ * Simplified hook for fetching user data from Telegram WebApp
+ * Makes a GET request to /auth/telegram/webapp endpoint
  */
 export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
-  const { enabled = true, walletAddress: providedWalletAddress } = options;
-  const queryClient = useQueryClient();
-
-  // Get wallet address from localStorage or props
-  const getWalletAddress = useCallback((): string | null => {
-    return (
-      providedWalletAddress ||
-      (typeof window !== 'undefined'
-        ? localStorage.getItem('walletAddress')
-        : null)
-    );
-  }, [providedWalletAddress]);
-
-  const walletAddress = getWalletAddress();
+  const { enabled = true } = options;
 
   // React Query for fetching user data
   const {
@@ -46,15 +29,9 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
     refetch: queryRefetch,
     isRefetching,
   } = useQuery({
-    queryKey: queryKeys.user(walletAddress || ''),
+    queryKey: queryKeys.user('telegram-webapp'),
     queryFn: async (): Promise<User> => {
-      if (!walletAddress) {
-        throw new Error(
-          'No wallet address found. Please connect your wallet first.',
-        );
-      }
-
-      const response = await api.user.getUser(walletAddress);
+      const response = await api.user.getUser();
 
       if (response.success && response.data) {
         return response.data;
@@ -62,63 +39,15 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
         throw new Error(response.error || 'Failed to fetch user data');
       }
     },
-    enabled: enabled && !!walletAddress,
+    enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  // Mutation for updating user data
-  const updateUserMutation = useMutation({
-    mutationFn: async (userData: Partial<User>): Promise<User> => {
-      if (!walletAddress) {
-        throw new Error('No wallet address found');
-      }
-
-      const response = await api.user.createOrUpdateUser(userData);
-
-      if (response.success && response.data) {
-        return response.data;
-      } else {
-        throw new Error(response.error || 'Failed to update user data');
-      }
-    },
-    onSuccess: (updatedUser) => {
-      // Update the cache with the new user data
-      queryClient.setQueryData(
-        queryKeys.user(walletAddress || ''),
-        updatedUser,
-      );
-      // Also invalidate related queries
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.userBalance(walletAddress || ''),
-      });
-      queryClient.invalidateQueries({
-        queryKey: queryKeys.userProfile(walletAddress || ''),
-      });
-    },
-    onError: (error) => {
-      console.error('Error updating user:', error);
-    },
-  });
-
   // Public methods
-  const refetch = useCallback(async (): Promise<void> => {
+  const refetch = async (): Promise<void> => {
     await queryRefetch();
-  }, [queryRefetch]);
-
-  const updateUser = useCallback(
-    async (userData: Partial<User>): Promise<void> => {
-      await updateUserMutation.mutateAsync(userData);
-    },
-    [updateUserMutation],
-  );
-
-  const clearError = useCallback((): void => {
-    queryClient.removeQueries({
-      queryKey: queryKeys.user(walletAddress || ''),
-      type: 'inactive',
-    });
-  }, [queryClient, walletAddress]);
+  };
 
   // Return hook interface
   return {
@@ -126,8 +55,6 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
     isLoading,
     error: queryError?.message || null,
     refetch,
-    updateUser,
-    clearError,
     isRefetching,
   };
 };
@@ -143,7 +70,7 @@ interface UseUserBalanceReturn {
 }
 
 /**
- * Specialized hook for user balance data with React Query
+ * Specialized hook for user balance data
  */
 export const useUserBalance = (): UseUserBalanceReturn => {
   const { user, isLoading, error, refetch, isRefetching } = useUser();
@@ -170,87 +97,15 @@ interface UseUserProfileReturn {
   } | null;
   isLoading: boolean;
   error: string | null;
-  updateProfile: (profileData: Partial<User>) => Promise<void>;
-  isUpdating: boolean;
+  refetch: () => Promise<void>;
+  isRefetching: boolean;
 }
 
 /**
- * Specialized hook for user profile data with React Query
+ * Specialized hook for user profile data
  */
 export const useUserProfile = (): UseUserProfileReturn => {
-  const { user, isLoading, error } = useUser();
-  const queryClient = useQueryClient();
-
-  // Get wallet address for cache invalidation
-  const walletAddress =
-    typeof window !== 'undefined'
-      ? localStorage.getItem('walletAddress')
-      : null;
-
-  // Mutation for updating profile
-  const updateProfileMutation = useMutation({
-    mutationFn: async (profileData: Partial<User>): Promise<User> => {
-      if (!user) {
-        throw new Error('No user data available');
-      }
-
-      const response = await api.user.createOrUpdateUser({
-        ...user,
-        ...profileData,
-      });
-
-      if (response.success && response.data) {
-        return response.data;
-      } else {
-        throw new Error(response.error || 'Failed to update profile');
-      }
-    },
-    onMutate: async (profileData) => {
-      // Cancel any outgoing refetches
-      await queryClient.cancelQueries({
-        queryKey: queryKeys.user(walletAddress || ''),
-      });
-
-      // Snapshot the previous value
-      const previousUser = queryClient.getQueryData(
-        queryKeys.user(walletAddress || ''),
-      );
-
-      // Optimistically update to the new value
-      if (previousUser && user) {
-        queryClient.setQueryData(queryKeys.user(walletAddress || ''), {
-          ...user,
-          ...profileData,
-        });
-      }
-
-      return { previousUser };
-    },
-    onError: (err, profileData, context) => {
-      // Revert to previous value on error
-      if (context?.previousUser) {
-        queryClient.setQueryData(
-          queryKeys.user(walletAddress || ''),
-          context.previousUser,
-        );
-      }
-      console.error('Error updating profile:', err);
-    },
-    onSuccess: (updatedUser) => {
-      // Update cache with server response
-      queryClient.setQueryData(
-        queryKeys.user(walletAddress || ''),
-        updatedUser,
-      );
-    },
-  });
-
-  const updateProfile = useCallback(
-    async (profileData: Partial<User>): Promise<void> => {
-      await updateProfileMutation.mutateAsync(profileData);
-    },
-    [updateProfileMutation],
-  );
+  const { user, isLoading, error, refetch, isRefetching } = useUser();
 
   const profile = user
     ? {
@@ -267,8 +122,8 @@ export const useUserProfile = (): UseUserProfileReturn => {
     profile,
     isLoading,
     error,
-    updateProfile,
-    isUpdating: updateProfileMutation.isPending,
+    refetch,
+    isRefetching,
   };
 };
 
