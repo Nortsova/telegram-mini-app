@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 export default function About() {
   return (
     <div className="min-h-screen bg-bg-dark flex items-center justify-center p-4">
@@ -19,8 +21,8 @@ export default function About() {
               </h2>
               <p className="text-text-secondary leading-relaxed">
                 This is a Telegram Mini App built with Next.js that demonstrates
-                integration with Telegram's Web App platform. It showcases user
-                authentication and profile management within the Telegram
+                integration with Telegram&apos;s Web App platform. It showcases
+                user authentication and profile management within the Telegram
                 ecosystem.
               </p>
             </div>
@@ -64,12 +66,12 @@ export default function About() {
           </div>
 
           <div className="mt-8 text-center">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center px-6 py-3 bg-brand-green text-basic-white font-medium rounded-lg hover:bg-brand-green-soft transition-colors"
             >
               ← Back to Home
-            </a>
+            </Link>
           </div>
         </div>
       </div>

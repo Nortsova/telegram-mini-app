@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { UserProfile } from './components/UserProfile';
 
 export default function Home() {
@@ -17,12 +18,12 @@ export default function Home() {
 
         <div className="mt-8 text-center space-y-4">
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a
+            <Link
               href="/about"
               className="inline-flex items-center px-4 py-2 bg-brand-green text-basic-white font-medium rounded-lg hover:bg-brand-green-soft transition-colors"
             >
               Learn More About This App
-            </a>
+            </Link>
           </div>
           <p className="text-sm text-text-secondary">
             Built with Next.js and Telegram Mini Apps SDK
