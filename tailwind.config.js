@@ -12,10 +12,14 @@ module.exports = {
         geist: ['var(--font-geist-sans)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
         poppins: ['var(--font-poppins)', 'sans-serif'],
+        montserrat: ['var(--font-montserrat)', 'sans-serif'],
       },
       fontWeight: {
+        light: '300',
         normal: '400',
         medium: '500',
+        semibold: '600',
+        bold: '700',
       },
       colors: {
         'brand-green': 'var(--color-brand-green)',
