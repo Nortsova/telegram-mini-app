@@ -1,5 +1,6 @@
 // Using custom React component
 import ChatIcon from '../components/icons/ChatIcon';
+import Button from '../components/Button';
 import DownIcon from '../components/icons/DownIcon';
 import UpIcon from '../components/icons/UpIcon';
 
@@ -67,28 +68,35 @@ export default function WalletPage() {
         <h2 className="text-5xl font-bold mb-8">$34,378.44</h2>
 
         {/* Connect to Chats Button */}
-        <button className="bg-gradient-to-r from-[var(--brand-gradient-from)] to-[var(--brand-gradient-to)] hover:opacity-90 active:opacity-80 focus:opacity-90 text-basic-black font-medium py-3 px-8 rounded-full mb-8 transition-opacity flex items-center justify-center mx-auto relative overflow-hidden group touch-manipulation">
-          <ChatIcon
-            className="mr-2"
-            width={20}
-            height={20}
-            stroke="currentColor"
-          />
-          <span>Connect to Chats</span>
-        </button>
+        <div className="mb-8">
+          <Button
+            variant="gradient"
+            size="md"
+            leftIcon={<ChatIcon width={20} height={20} stroke="currentColor" />}
+            className="mx-auto"
+          >
+            Connect to Chats
+          </Button>
+        </div>
 
         {/* Action Buttons */}
         <div className="flex gap-4 justify-center mb-12">
-          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 active:bg-stroke/30 focus:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group touch-manipulation">
-            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 group-active:opacity-25 group-focus:opacity-20 transition-opacity duration-300"></span>
-            <DownIcon className="mr-3 relative z-10" width={24} height={24} />
-            <span className="relative z-10">Withdraw</span>
-          </button>
-          <button className="flex-1 max-w-xs bg-bg-dark-gray hover:bg-stroke/20 active:bg-stroke/30 focus:bg-stroke/20 text-text-primary py-4 px-6 rounded-2xl transition-colors flex items-center justify-center relative overflow-hidden group touch-manipulation">
-            <span className="absolute inset-0 radial-gradient-sm opacity-0 group-hover:opacity-20 group-active:opacity-25 group-focus:opacity-20 transition-opacity duration-300"></span>
-            <UpIcon className="mr-3 relative z-10" width={24} height={24} />
-            <span className="relative z-10">Receive</span>
-          </button>
+          <Button
+            variant="secondary"
+            size="lg"
+            leftIcon={<DownIcon width={24} height={24} />}
+            className="flex-1 max-w-xs rounded-2xl"
+          >
+            Withdraw
+          </Button>
+          <Button
+            variant="secondary"
+            size="lg"
+            leftIcon={<UpIcon width={24} height={24} />}
+            className="flex-1 max-w-xs rounded-2xl"
+          >
+            Receive
+          </Button>
         </div>
       </div>
 
