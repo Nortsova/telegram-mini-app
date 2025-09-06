@@ -2,12 +2,13 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import ChatIcon from '../components/icons/ChatIcon';
 import Button from '../components/Button';
 import DownIcon from '../components/icons/DownIcon';
 import UpIcon from '../components/icons/UpIcon';
 import { Asset } from '../../lib/api';
-import { useUserBalance } from '../../hooks/useUser';
+import { useTelegram } from '../components/TelegramProvider';
 
 // Extended Asset interface for UI-specific properties
 interface UIAsset extends Asset {
@@ -58,33 +59,72 @@ const fallbackAssets: UIAsset[] = [
   },
 ];
 
-// Helper function to add UI properties to assets
-const addUIProperties = (assets: Asset[]): UIAsset[] => {
-  const colorMap: Record<string, string> = {
-    ETH: 'bg-gray-600',
-    BTC: 'bg-orange-500',
-    USDT: 'bg-green-500',
-    XRP: 'bg-gray-700',
-    TON: 'bg-blue-500',
-  };
-
-  return assets.map((asset) => ({
-    ...asset,
-    bgColor: colorMap[asset.symbol] || 'bg-gray-500',
-  }));
-};
-
 export default function WalletPage() {
+  const { user } = useTelegram();
   // Convert API assets to UI assets with color properties, or use fallback
   const assets: UIAsset[] = fallbackAssets;
 
   return (
-    <div className="min-h-screen bg-bg-dark text-text-primary relative overflow-hidden pt-20">
+    <div className="min-h-screen bg-bg-dark text-text-primary relative overflow-hidden">
       {/* Main background gradient */}
       <span className="absolute top-0 left-0 w-[40rem] h-[40rem] radial-gradient opacity-40 -translate-x-[20rem] -translate-y-[20rem]"></span>
 
+      {/* Header with User Photo */}
+      <div className="relative z-10 flex items-center justify-end p-6 pt-16">
+        {user ? (
+          <div className="flex items-center">
+            {user.photo_url ? (
+              <Image
+                src={user.photo_url}
+                alt={`${user.first_name}'s avatar`}
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full border-2 border-brand-green-bright/30"
+              />
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-brand-green-bright to-brand-green-extra flex items-center justify-center">
+                <span className="text-sm font-bold text-basic-black">
+                  {user.first_name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="w-10 h-10 rounded-full bg-gray-700/50 flex items-center justify-center">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-gray-400"
+            >
+              <path
+                d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+              <path
+                d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </div>
+        )}
+      </div>
+
       {/* Balance Section */}
-      <div className="text-center py-12 px-4">
+      <div className="text-center py-8 px-4">
+        {user && (
+          <p className="text-text-secondary text-sm mb-1">
+            Hi, {user.first_name}
+          </p>
+        )}
         <p className="text-text-secondary mb-2">Balance</p>
 
         <h2 className="text-5xl font-bold mb-8">{'$34,378.44'}</h2>
