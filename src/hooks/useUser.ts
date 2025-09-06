@@ -45,7 +45,8 @@ export const useUser = (options: UseUserOptions = {}): UseUserReturn => {
         throw new Error(response.error || 'Failed to fetch user data');
       }
     },
-    enabled: enabled && typeof window !== 'undefined' && !!initData,
+    // enabled: enabled && typeof window !== 'undefined' && !!initData,
+    enabled: true,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
