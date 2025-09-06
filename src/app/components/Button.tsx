@@ -23,7 +23,7 @@ export const Button: React.FC<ButtonProps> = ({
 }) => {
   // Base styles
   const baseStyles =
-    'font-medium transition-opacity flex items-center justify-center relative overflow-hidden group touch-manipulation focus:outline-none';
+    'font-medium transition-opacity flex items-center justify-center relative overflow-hidden group touch-manipulation focus:outline-none cursor-pointer';
 
   // Variant styles
   const variantStyles = {

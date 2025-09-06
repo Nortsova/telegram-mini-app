@@ -34,7 +34,7 @@ export default function SelectWallet() {
     console.log('Wallet form submitted:', data);
     // Here you would typically validate the wallet address
     // and then navigate to the next screen
-    router.push('/wallet');
+    router.push('/main-screen');
   };
 
   return (
@@ -113,7 +113,7 @@ export default function SelectWallet() {
               <button
                 type="button"
                 onClick={handleCopyAddress}
-                className="flex-shrink-0 p-2 hover:bg-white/10 rounded-lg transition-colors touch-manipulation"
+                className="flex-shrink-0 p-2 hover:bg-white/10 rounded-lg transition-colors touch-manipulation cursor-pointer"
                 aria-label="Copy wallet address"
               >
                 <svg

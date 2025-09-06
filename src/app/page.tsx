@@ -19,7 +19,7 @@ export default function Home() {
         <div className="mt-8 text-center space-y-4">
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Link
-              href="/wallet"
+              href="/initial-screen"
               className="inline-flex items-center px-4 py-2 bg-brand-green text-basic-white font-medium rounded-lg hover:bg-brand-green-soft transition-colors"
             >
               Open Wallet
